@@ -1,0 +1,6 @@
+{
+    "themes": [{
+        "name" : "dpv-theme",
+        "types": [ "welcome","login", "account" ]
+    }]
+}

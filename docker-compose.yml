@@ -1,0 +1,92 @@
+version: '3'
+
+services:
+  db:
+    image: mariadb
+    container_name: keycloak_db
+    restart: unless-stopped
+    volumes:
+      - db:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    env_file:
+      - db.env
+    networks:
+      - proxy-tier
+
+  keycloak:
+    image: jboss/keycloak
+    container_name: keycloak_keycloak
+    restart: unless-stopped
+    environment:
+      DB_VENDOR: mariadb
+      DB_ADDR: db
+      JAVA_OPTS_APPEND: "-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"
+      KEYCLOAK_WELCOME_THEME: "dpv-theme"
+    volumes:
+      - ./extensions/prebuild/dpv-theme.jar:/opt/jboss/keycloak/standalone/deployments/dpv-theme.jar
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    env_file:
+      - keycloak.env
+    depends_on:
+      - db
+    networks:
+      - proxy-tier
+
+  proxy:
+    build: ./proxy
+    container_name: keycloak_proxy
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - certs:/etc/nginx/certs:ro
+      - vhost.d:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    networks:
+      - proxy-tier
+
+
+  backup:
+    build: ./backup
+    container_name: keycloak_backup
+    restart: unless-stopped
+    environment:
+      - MYSQL_HOST=db
+    env_file:
+      - db.env
+      - backup.env
+    volumes:
+      - backup:/backup/keycloak
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    tty: true
+    networks:
+      - proxy-tier
+    depends_on:
+      - db
+
+volumes:
+  db:
+    driver_opts:
+      type: none
+      device: /data/keycloak/db
+      o: bind
+  certs:
+  vhost.d:
+  html:
+  acme:
+  backup:
+    driver_opts:
+      type: none
+      device: /backup/keycloak
+      o: bind
+
+networks:
+  proxy-tier:

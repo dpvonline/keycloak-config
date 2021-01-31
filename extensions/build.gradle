@@ -1,0 +1,9 @@
+ext {
+    set('keycloakVersion', "12.0.2")
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}

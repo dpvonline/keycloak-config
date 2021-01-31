@@ -1,0 +1,9 @@
+.idea
+/venv/
+.gradle
+/extensions/.gradle
+/extensions/gradle/wrapper/
+/extensions/dpv-theme/build/
+backup.env
+db.env
+keycloak.env
