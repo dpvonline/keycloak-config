@@ -72,6 +72,23 @@ services:
     depends_on:
       - db
 
+  notify:
+    build: ./notify
+    container_name: keycloak_notify
+    restart: unless-stopped
+    env_file:
+      - backup.env
+      - keycloak.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    tty: true
+    networks:
+      - proxy-tier
+    dns:
+      - 8.8.8.8
+        
 volumes:
   db:
     driver_opts:
