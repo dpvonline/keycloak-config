@@ -20,7 +20,7 @@ logger = logging.getLogger("dpv_notify")
 
 class KeycloakManager(object):
     def __init__(self, params):
-        self._ts_file = '/tmp/notify_ts.txt'
+        self._ts_file = '/notify/timestamp.txt'
         self._url = format_url(params['VIRTUAL_HOST'] + "/auth/")
         self._keycloak_admin = KeycloakAdmin(
             server_url=self._url,
@@ -46,6 +46,8 @@ class KeycloakManager(object):
                     ts_s = float(val) + 3
 
         if ts_s == 0:
+            # If no timestamp send new registrations from last 24 hours
+            logger.info("Could not find initial timestamp. Send new registration from last 24 hours.")
             ts_s = current_ts_s - 24 * 60 * 60
 
         last_ts_ms = int(ts_s * 1000.0)

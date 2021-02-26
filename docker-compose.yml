@@ -80,6 +80,7 @@ services:
       - backup.env
       - keycloak.env
     volumes:
+      - notify:/notify
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
@@ -104,6 +105,7 @@ volumes:
       type: none
       device: /backup/keycloak
       o: bind
+  notify:
 
 networks:
   proxy-tier:
