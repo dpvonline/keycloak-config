@@ -4,9 +4,9 @@ __copyright__ = "Copyright 2021, DPV e.V."
 __license__ = "MIT"
 
 import argparse
+import datetime
 import logging
 import os
-import sys
 import time
 
 from keycloak import KeycloakAdmin
@@ -35,19 +35,26 @@ class KeycloakManager(object):
         users = self._keycloak_admin.get_users({})
         logger.debug("Got {} users".format(len(users)))
 
-        last_ts_ms = 0
+        current_ts_s = time.time()
+
+        ts_s = 0
         if os.path.exists(self._ts_file):
             with open(self._ts_file, 'r') as f:
                 val = f.read()
                 if val:
                     # 3 seconds grace period
                     ts_s = float(val) + 3
-                    last_ts_ms = int(ts_s * 1000.0)
+
+        if ts_s == 0:
+            ts_s = current_ts_s - 24 * 60 * 60
+
+        last_ts_ms = int(ts_s * 1000.0)
 
         for user in users:
             user_ts_ms = user['createdTimestamp']
             if user_ts_ms >= last_ts_ms:
-                logger.info("New user registered: {username}".format(username=user['username']))
+                date = datetime.datetime.fromtimestamp(user_ts_ms / 1000.0)
+                logger.info("New user registered: {username} at {date}".format(username=user['username'], date=date))
 
         with open(self._ts_file, 'w') as f:
             last_ts_s = time.time()
