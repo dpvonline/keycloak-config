@@ -4,17 +4,18 @@ __copyright__ = "Copyright 2021, DPV e.V."
 __license__ = "MIT"
 
 import logging
-from logging import handlers
 import smtplib
+from logging import handlers
 
-logger = logging.getLogger("dpv_backup")
+logger = logging.getLogger("dpv_auth_notify")
 
 
-def init_mail(fromaddr, password, toaddrs, mailhost, mailport, subject="DPV Cloud Backup", ):
-    logging.getLogger('').addHandler(
-        SMTPHandler(fromaddr=fromaddr, password=password, toaddrs=toaddrs,
-                    subject=subject, mailhost=mailhost,
-                    mailport=mailport))
+def init_mail(fromaddr, password, toaddrs, mailhost, mailport, subject="DPV Auth Notify"):
+    handler = SMTPHandler(fromaddr=fromaddr, password=password, toaddrs=toaddrs,
+                          subject=subject, mailhost=mailhost,
+                          mailport=mailport)
+    logging.getLogger('').addHandler(handler)
+    return handler
 
 
 class SMTPHandler(logging.handlers.BufferingHandler):
@@ -29,29 +30,34 @@ class SMTPHandler(logging.handlers.BufferingHandler):
         self._password = password
         self._toaddrs = toaddrs
         self._subject = subject
+        self._send_mail = True
 
     def __sendmail(self, msg: str) -> bool:
         # Try to log in to server and send email
         with smtplib.SMTP_SSL(self._smtp_server, self._smtp_port) as server:
             server.login(self._fromaddr, self._password)
-            server.sendmail(self._fromaddr, self._toaddrs, msg)
+            server.sendmail(self._fromaddr, self._toaddrs, msg.encode("utf8"))
             return True
 
         return False
 
+    def set_send_mail(self, send_mail):
+        self._send_mail = send_mail
+
     def flush(self):
         self.acquire()
-        try:
-            if len(self.buffer) > 0:
-                msg = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (
-                    self._fromaddr, self._toaddrs, self._subject)
-                for record in self.buffer:
-                    s = self.format(record)
-                    msg = msg + s + "\r\n"
-                if self.__sendmail(msg):
-                    print("Message send")
-                else:
-                    print("Error sending message")
-        finally:
-            self.buffer = []
+        if len(self.buffer) > 0 and self._send_mail:
+            msg = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (
+                self._fromaddr, self._toaddrs, self._subject)
+            for record in self.buffer:
+                s = self.format(record)
+                msg = msg + s + "\r\n"
+            try:
+                self.__sendmail(msg)
+                print("Message send")
+            except:
+                print("Error sending message")
+
+            finally:
+                self.buffer = []
             self.release()
