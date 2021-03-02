@@ -82,7 +82,7 @@ class KeycloakManager(object):
             groups = self._keycloak_admin.get_user_groups(user_id)
             permission_dict[user_name] = list()
             for group in groups:
-                group_name = group['name']
+                group_name = group['path']
                 permission_dict[user_name].append(group_name)
 
             current_groups = set(permission_dict[user_name])
