@@ -10,17 +10,18 @@ from logging import handlers
 logger = logging.getLogger("dpv_auth_notify")
 
 
-def init_mail(fromaddr, password, toaddrs, mailhost, mailport, subject="DPV Auth Notify"):
+def init_mail(fromaddr: str, password: str, toaddrs: str, mailhost: str, mailport: int, send_mail: bool = True,
+              subject="DPV Auth Notify"):
     handler = SMTPHandler(fromaddr=fromaddr, password=password, toaddrs=toaddrs,
                           subject=subject, mailhost=mailhost,
-                          mailport=mailport)
+                          mailport=mailport, send_mail=send_mail)
     logging.getLogger('').addHandler(handler)
     return handler
 
 
 class SMTPHandler(logging.handlers.BufferingHandler):
     def __init__(self, fromaddr: str, password: str, toaddrs: str, subject: str, mailhost: str,
-                 mailport: int = smtplib.SMTP_SSL_PORT, capacity=1000):
+                 mailport: int = smtplib.SMTP_SSL_PORT, send_mail: bool = True, capacity=1000):
         logging.handlers.BufferingHandler.__init__(self, capacity=capacity)
         self.buffer = []
         self.setFormatter(logging.Formatter("%(asctime)s %(levelname)-5s %(message)s"))
@@ -30,7 +31,7 @@ class SMTPHandler(logging.handlers.BufferingHandler):
         self._password = password
         self._toaddrs = toaddrs
         self._subject = subject
-        self._send_mail = True
+        self._send_mail = send_mail
 
     def __sendmail(self, msg: str) -> bool:
         # Try to log in to server and send email
