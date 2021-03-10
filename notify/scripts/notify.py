@@ -34,15 +34,20 @@ if __name__ == "__main__":
     smtp_handler = None
     if str2bool(PARAMS['SEND_MAIL']):
         smtp_handler = init_mail(fromaddr=PARAMS['SMTP_FROM'], password=PARAMS['SMTP_PWD'], toaddrs=PARAMS['SMTP_TO'],
-                                 subject="DPV Auth Permissions Notify", mailhost=PARAMS['SMTP_HOST'],
+                                 subject="DPV Auth User Notify", mailhost=PARAMS['SMTP_HOST'],
                                  mailport=PARAMS['SMTP_PORT'])
 
-    manager = KeycloakManager(params=PARAMS)
-    logger.info("Guckuck, ihr Räuber! Folgende Änderungen gab es:")
-    data_changed = manager.check_changed_permissions()
+    try:
+        manager = KeycloakManager(params=PARAMS)
+        logger.info("Guckuck, ihr Räuber! Folgende neue Anmeldungen gab es:")
+        user_changed = manager.check_registrations()
+        permission_changed = manager.check_changed_permissions()
+        data_changed = user_changed or permission_changed
 
-    if not data_changed and smtp_handler:
-        smtp_handler.set_send_mail(send_mail=False)
+        if smtp_handler:
+            smtp_handler.set_send_mail(send_mail=data_changed)
+    except:
+        logger.error("Irgendwas läuft mächtig schief.")
 
     logging.shutdown()
     exit(0)
