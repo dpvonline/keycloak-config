@@ -21,7 +21,7 @@ apt-get update
 apt-get install -y docker-ce docker-ce-cli containerd.io
 
 ## Add user to docker group
-usermod -aG docker $USER
+usermod -aG docker $SUDO_USER
 
 ## Install docker-compose
 apt-get install -y python3-pip \

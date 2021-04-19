@@ -36,6 +36,16 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <div class="col-sm-2 col-md-2">
+                <label for="user.attributes.fahrtenname" class="control-label">${msg("fahrtenname")}</label>
+            </div>
+
+            <div class="col-sm-10 col-md-10">
+                <input type="text" class="form-control" id="user.attributes.fahrtenname" name="user.attributes.fahrtenname" value="${(account.attributes.fahrtenname!'')}"/>
+            </div>
+        </div>
+
         <div class="form-group ${messagesPerField.printIfExists('firstName','has-error')}">
             <div class="col-sm-2 col-md-2">
                 <label for="firstName" class="control-label">${msg("firstName")}</label>
@@ -56,17 +66,6 @@
             </div>
         </div>
 
-        <#-- Start custom DPV -->
-        <div class="form-group">
-            <div class="col-sm-2 col-md-2">
-                <label for="user.attributes.fahrtenname" class="control-label">${msg("fahrtenname")}</label>
-            </div>
-
-            <div class="col-sm-10 col-md-10">
-                <input type="text" class="form-control" id="user.attributes.fahrtenname" name="user.attributes.fahrtenname" value="${(account.attributes.fahrtenname!'')}"/>
-            </div>
-        </div>
-
         <div class="form-group">
             <div class="col-sm-2 col-md-2">
                 <label for="user.attributes.verband" class="control-label">${msg("verband")}</label>
@@ -81,9 +80,9 @@
             <div class="col-sm-2 col-md-2">
                 <label for="user.attributes.bund" class="control-label">${msg("bund")}</label>
             </div>
-
-            <div class="col-sm-10 col-md-10">
-                <input type="text" class="form-control" id="user.attributes.bund" name="user.attributes.bund" value="${(account.attributes.bund!'')}"/>
+            <input type="hidden" id="attributes.bund" value="${(account.attributes.bund!'')}">
+            <input type="hidden" id="class.bund" value="form-control">
+            <div class="col-sm-10 col-md-10" id="bund">
             </div>
         </div>
 
@@ -96,8 +95,6 @@
                 <input type="text" class="form-control" id="user.attributes.stamm" name="user.attributes.stamm" value="${(account.attributes.stamm!'')}"/>
             </div>
         </div>
-        <#-- End custom DPV -->
-
 
         <div class="form-group">
             <div id="kc-form-buttons" class="col-md-offset-2 col-md-10 submit">

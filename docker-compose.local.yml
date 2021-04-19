@@ -3,12 +3,11 @@ version: '3'
 services:
   phpmyadmin:
     image: phpmyadmin
+    container_name: keycloak_phpmyadmin
     restart: unless-stopped
     environment:
       - PMA_HOST=db
       - VIRTUAL_HOST=phpmyadmin.localhost
-    ports:
-      - 8080:80
     depends_on:
       - db
     networks:
@@ -17,5 +16,7 @@ services:
   keycloak:
     volumes:
       - ./extensions/dpv-theme/src/main/resources/theme/dpv-theme:/opt/jboss/keycloak/themes/dpv-theme-dev
+      - ./extensions/scripts/disable-theme-cache.cli:/opt/jboss/startup-scripts/disable-theme-cache.cli
     environment:
       KEYCLOAK_WELCOME_THEME: "dpv-theme-dev"
+      JAVA_OPTS_APPEND: "-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.upload_scripts=enabled"

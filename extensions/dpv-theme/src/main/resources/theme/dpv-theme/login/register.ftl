@@ -9,11 +9,21 @@
         <form id="kc-register-form" class="${properties.kcFormClass!}" action="${url.registrationAction}" method="post">
             <div class="${properties.kcFormGroupClass!}">
                 <div class="${properties.kcLabelWrapperClass!}">
+                    <label for="user.attributes.fahrtenname" class="${properties.kcLabelClass!}">${msg("fahrtenname")}</label>
+                </div>
+                <div class="${properties.kcInputWrapperClass!}">
+                    <input type="text" id="user.attributes.fahrtenname" class="${properties.kcInputClass!}" name="user.attributes.fahrtenname"
+                           value="${(register.formData['user.attributes.fahrtenname']!'')}" required/>
+                </div>
+            </div>
+
+            <div class="${properties.kcFormGroupClass!}">
+                <div class="${properties.kcLabelWrapperClass!}">
                     <label for="firstName" class="${properties.kcLabelClass!}">${msg("firstName")} (${msg("notMandatory")})</label>
                 </div>
                 <div class="${properties.kcInputWrapperClass!}">
                     <input type="text" id="firstName" class="${properties.kcInputClass!}" name="firstName"
-                           value="${(register.formData.firstName!'-')}"
+                           value="${(register.formData.firstName!'')}"
                            aria-invalid="<#if messagesPerField.existsError('firstName')>true</#if>"
                     />
 
@@ -31,7 +41,7 @@
                 </div>
                 <div class="${properties.kcInputWrapperClass!}">
                     <input type="text" id="lastName" class="${properties.kcInputClass!}" name="lastName"
-                           value="${(register.formData.lastName!'-')}"
+                           value="${(register.formData.lastName!)}"
                            aria-invalid="<#if messagesPerField.existsError('lastName')>true</#if>"
                     />
 
@@ -43,17 +53,6 @@
                 </div>
             </div>
 
-
-            <#-- Start custom DPV -->
-            <div class="${properties.kcFormGroupClass!}">
-                <div class="${properties.kcLabelWrapperClass!}">
-                    <label for="user.attributes.fahrtenname" class="${properties.kcLabelClass!}">${msg("fahrtenname")} (${msg("notMandatory")})</label>
-                </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input type="text" id="user.attributes.fahrtenname" class="${properties.kcInputClass!}" name="user.attributes.fahrtenname"
-                           value="${(register.formData['user.attributes.fahrtenname']!'')}"/>
-                </div>
-            </div>
 
             <div class="${properties.kcFormGroupClass!}">
                 <div class="${properties.kcLabelWrapperClass!}">
@@ -69,9 +68,10 @@
                 <div class="${properties.kcLabelWrapperClass!}">
                     <label for="user.attributes.bund" class="${properties.kcLabelClass!}">${msg("bund")} (${msg("notMandatory")})</label>
                 </div>
-                <div class="${properties.kcInputWrapperClass!}">
-                    <input type="text" id="user.attributes.bund" class="${properties.kcInputClass!}" name="user.attributes.bund"
-                           value="${(register.formData['user.attributes.bund']!'')}"/>
+                <input type="hidden" id="attributes.bund" value="${(register.formData['user.attributes.bund']!'')}">
+                <input type="hidden" id="class.bund" value="${properties.kcInputClass!}">
+                <div class="${properties.kcInputWrapperClass!}" id="bund">
+                    // Filled by JS
                 </div>
             </div>
 
@@ -84,7 +84,6 @@
                            value="${(register.formData['user.attributes.stamm']!'')}"/>
                 </div>
             </div>
-            <#-- End custom DPV -->
 
             <div class="${properties.kcFormGroupClass!}">
                 <div class="${properties.kcLabelWrapperClass!}">
@@ -94,6 +93,7 @@
                     <input type="text" id="email" class="${properties.kcInputClass!}" name="email"
                            value="${(register.formData.email!'')}" autocomplete="email"
                            aria-invalid="<#if messagesPerField.existsError('email')>true</#if>"
+                           required
                     />
                 </div>
             </div>
@@ -107,6 +107,7 @@
                         <input type="text" id="username" class="${properties.kcInputClass!}" name="username"
                                value="${(register.formData.username!'')}" autocomplete="username"
                                aria-invalid="<#if messagesPerField.existsError('username')>true</#if>"
+                               required
                         />
 
                         <#if messagesPerField.existsError('username')>
@@ -127,6 +128,7 @@
                         <input type="password" id="password" class="${properties.kcInputClass!}" name="password"
                                autocomplete="new-password"
                                aria-invalid="<#if messagesPerField.existsError('password','password-confirm')>true</#if>"
+                               required
                         />
 
                         <#if messagesPerField.existsError('password')>
@@ -146,6 +148,7 @@
                         <input type="password" id="password-confirm" class="${properties.kcInputClass!}"
                                name="password-confirm"
                                aria-invalid="<#if messagesPerField.existsError('password-confirm')>true</#if>"
+                               required
                         />
 
                         <#if messagesPerField.existsError('password-confirm')>
