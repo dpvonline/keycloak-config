@@ -77,7 +77,7 @@ services:
     container_name: keycloak_notify
     restart: unless-stopped
     env_file:
-      - backup.env
+      - notify.env
       - keycloak.env
     volumes:
       - notify:/notify
