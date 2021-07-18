@@ -5,6 +5,7 @@ __license__ = "MIT"
 
 import argparse
 import logging
+import sys
 
 from keycloak_manager import KeycloakManager
 from logger import init_mail
@@ -47,7 +48,8 @@ if __name__ == "__main__":
         if smtp_handler:
             smtp_handler.set_send_mail(send_mail=data_changed)
     except:
-        logger.error("Irgendwas läuft mächtig schief.")
+        logger.error("Entweder es läuft ein Update oder etwas mächtig schief. \n"
+                     "Sorgen solltest du dir erst machen, wenn du diese Nachricht regelmäßig bekommst.")
 
     logging.shutdown()
-    exit(0)
+    sys.exit(0)
