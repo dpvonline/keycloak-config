@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    image: mariadb
+    image: mariadb:10.5
     container_name: keycloak_db
     restart: unless-stopped
     volumes:
@@ -89,7 +89,7 @@ services:
       - proxy-tier
     dns:
       - 8.8.8.8
-        
+
 volumes:
   db:
     driver_opts:
