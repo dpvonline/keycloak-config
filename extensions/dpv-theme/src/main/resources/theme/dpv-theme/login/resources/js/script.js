@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
     let form = document.getElementById("kc-register-form");
-    form.addEventListener("submit", function () {
+    form.addEventListener("submit", function (event) {
         function replaceEmpty(name) {
             let form = document.getElementById("kc-register-form");
             if (form[name].value === "") {
@@ -62,8 +62,28 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         }
 
+        function checkIfMail(name) {
+            let form = document.getElementById("kc-register-form");
+
+            function validateEmail(email) {
+                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            }
+
+            if (validateEmail(form[name].value)) {
+                let span = document.createElement("span");
+                span.setAttribute("id", "input-error-username");
+                span.setAttribute("class", "pf-c-form__helper-text pf-m-error required kc-feedback-text");
+                span.textContent = "Darf keine Mail Adresse sein.";
+                form[name].parentNode.insertBefore(span, form[name].nextSibling);
+
+                event.preventDefault();
+            }
+        }
+
         replaceEmpty("firstName")
         replaceEmpty("lastName")
+        checkIfMail("username")
     });
 
 
