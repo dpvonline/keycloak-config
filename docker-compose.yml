@@ -15,16 +15,17 @@ services:
       - proxy-tier
 
   keycloak:
-    image: jboss/keycloak
+    image: quay.io/keycloak/keycloak:latest
     container_name: keycloak_keycloak
     restart: unless-stopped
     environment:
-      DB_VENDOR: mariadb
-      DB_ADDR: db
-      JAVA_OPTS_APPEND: "-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled"
-      KEYCLOAK_WELCOME_THEME: "dpv-theme"
+      KC_DB: "mariadb"
+      KC_DB_URL_HOST: "db"
+      KC_PROXY: "edge"
+      KC_HOSTNAME_STRICT: "false"
+      KC_FEATURES: "admin-fine-grained-authz"
     volumes:
-      - ./extensions/prebuild/dpv-theme.jar:/opt/jboss/keycloak/standalone/deployments/dpv-theme.jar
+      - ./extensions/prebuild/dpv-theme.jar:/opt/keycloak/providers/dpv-theme.jar
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     env_file:
@@ -33,6 +34,8 @@ services:
       - db
     networks:
       - proxy-tier
+    command:
+      - start --auto-build
 
   proxy:
     image: jwilder/nginx-proxy:alpine
