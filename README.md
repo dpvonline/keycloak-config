@@ -80,3 +80,11 @@ by
 <dir>${jboss.home.dir}/themes</dir>
 </theme>
 ```
+
+## Build theme
+
+```
+cd extensions
+gradle build
+cp ./dpv-theme/build/libs/dpv-theme.jar ./prebuild/dpv-theme.jar 
+```
