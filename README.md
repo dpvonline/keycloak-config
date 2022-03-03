@@ -40,6 +40,11 @@ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 This will show you all the logs in your current terminal, which is probably a good
 idea for first start. If you want to run in background, just append `-d` or `--detach`.
 
+##
+You can reach the master console via:
+
+http://localhost/admin/master/console
+
 
 ### Theme development setup
 

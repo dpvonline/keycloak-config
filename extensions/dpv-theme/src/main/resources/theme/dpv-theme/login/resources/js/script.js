@@ -64,19 +64,23 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 }
             }
 
-            function checkIfMail(name) {
+            function validateUsername(name) {
                 let form = document.getElementById("kc-register-form");
 
-                function validateEmail(email) {
-                    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                    return re.test(String(email).toLowerCase());
+                function validateUser(string) {
+                    const pattern = /^[a-zA-Z0-9]*$/
+                    return pattern.test(String(string));
                 }
 
-                if (validateEmail(form[name].value)) {
-                    let span = document.createElement("span");
-                    span.setAttribute("id", "input-error-username");
-                    span.setAttribute("class", "pf-c-form__helper-text pf-m-error required kc-feedback-text");
-                    span.textContent = "Darf keine Mail Adresse sein.";
+                if (!validateUser(form[name].value)) {
+                    let span = document.getElementById("input-error-username");
+                    if( !span ){
+                        span = document.createElement("span");
+                        span.setAttribute("id", "input-error-username");
+                        span.setAttribute("class", "pf-c-form__helper-text pf-m-error required kc-feedback-text");
+                    }
+
+                    span.textContent = "Darf keine Mail Adresse sein und keine Sonder- oder Leerzeichen enthalten.";
                     form[name].parentNode.insertBefore(span, form[name].nextSibling);
 
                     event.preventDefault();
@@ -85,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
             replaceEmpty("firstName")
             replaceEmpty("lastName")
-            checkIfMail("username")
+            validateUsername("username")
         });
     }
 });

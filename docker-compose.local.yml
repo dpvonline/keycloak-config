@@ -15,8 +15,7 @@ services:
 
   keycloak:
     volumes:
-      - ./extensions/dpv-theme/src/main/resources/theme/dpv-theme:/opt/jboss/keycloak/themes/dpv-theme-dev
-      - ./extensions/scripts/disable-theme-cache.cli:/opt/jboss/startup-scripts/disable-theme-cache.cli
+      - ./extensions/dpv-theme/src/main/resources/theme/dpv-theme:/opt/keycloak/themes/dpv-theme-dev
     environment:
-      KEYCLOAK_WELCOME_THEME: "dpv-theme-dev"
-      JAVA_OPTS_APPEND: "-Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.upload_scripts=enabled"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+      KC_HTTP_ENABLED: "true"
