@@ -35,7 +35,7 @@ services:
       - proxy-tier
 
   proxy:
-    build: ./proxy
+    image: jwilder/nginx-proxy:alpine
     container_name: keycloak_proxy
     restart: unless-stopped
     ports:
