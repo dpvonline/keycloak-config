@@ -20,11 +20,11 @@ class KeycloakManager(object):
     def __init__(self, params):
         self._ts_file = '/notify/timestamp.txt'
         self._pms_tile = '/notify/permissions.txt'
-        self._url = format_url(params['VIRTUAL_HOST'] + "/auth/")
+        self._url = format_url(params['VIRTUAL_HOST'])
         self._keycloak_admin = KeycloakAdmin(
             server_url=self._url,
-            username=params['KEYCLOAK_USER'],
-            password=params['KEYCLOAK_PASSWORD'],
+            username=params['KEYCLOAK_ADMIN'],
+            password=params['KEYCLOAK_ADMIN_PASSWORD'],
             realm_name="DPV",
             user_realm_name="master",
             verify=True)
