@@ -10,7 +10,7 @@ PARAMS = {
     'SMTP_PWD': '',
     'SMTP_HOST': '',
     'SMTP_PORT': '',
-    'KEYCLOAK_USER': '',
-    'KEYCLOAK_PASSWORD': '',
+    'KEYCLOAK_ADMIN': '',
+    'KEYCLOAK_ADMIN_PASSWORD': '',
     'VIRTUAL_HOST': '',
 }
