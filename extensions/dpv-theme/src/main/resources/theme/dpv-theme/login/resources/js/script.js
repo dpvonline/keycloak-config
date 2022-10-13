@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     "JOMS": "Jomsburg - freier Pfadfinderbund",
                     "PBH": "Pfadfinderbund Horizonte",
                     "PBMV": "Pfadfinderbund Mecklenburg-Vorpommern",
-                    "PBN": "Pfadfinder- und Pfadfinderinnenbund Nord",
+                    "PBN": "Pfadfinder*innenbund Nord",
                     "PBNL": "Pfadfinder- und Pfadfinderinnenbund Nordlicht",
                     "PBW": "Pfadfinderbund Weltenbummler",
                     "PBB": "Pfadfinderbund Boreas",
