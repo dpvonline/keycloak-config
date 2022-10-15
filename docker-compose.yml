@@ -26,6 +26,7 @@ services:
       KC_FEATURES: "admin-fine-grained-authz"
     volumes:
       - ./extensions/prebuild/dpv-theme.jar:/opt/keycloak/providers/dpv-theme.jar
+      - ./extensions/prebuild/dpv-tool-theme.jar:/opt/keycloak/providers/dpv-tool-theme.jar
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     env_file:
@@ -35,15 +36,15 @@ services:
     networks:
       - proxy-tier
     command:
-      - start --auto-build
+      - start
 
   proxy:
     image: jwilder/nginx-proxy:alpine
     container_name: keycloak_proxy
     restart: unless-stopped
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
     volumes:
       - certs:/etc/nginx/certs:ro
       - vhost.d:/etc/nginx/vhost.d

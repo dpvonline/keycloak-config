@@ -1,0 +1,6 @@
+{
+    "themes": [{
+        "name" : "dpv-tool-theme",
+        "types": ["login"]
+    }]
+}

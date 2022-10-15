@@ -1,3 +1,4 @@
 rootProject.name = 'keycloak-extensions'
 
 include 'dpv-theme'
+include 'dpv-tool-theme'
