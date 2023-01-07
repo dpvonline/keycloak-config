@@ -39,7 +39,7 @@ services:
       - start
 
   proxy:
-    image: jwilder/nginx-proxy:alpine
+    build: ./proxy
     container_name: keycloak_proxy
     restart: unless-stopped
     ports:
