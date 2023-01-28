@@ -7,3 +7,5 @@
 backup.env
 db.env
 keycloak.env
+/data/
+/extensions/dpv-tool-theme/build/
