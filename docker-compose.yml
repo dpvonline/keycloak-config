@@ -2,7 +2,7 @@ version: '3'
 
 services:
   db:
-    image: mariadb:10.5
+    image: mariadb:10.11
     container_name: keycloak_db
     restart: unless-stopped
     volumes:
@@ -15,7 +15,7 @@ services:
       - proxy-tier
 
   keycloak:
-    image: quay.io/keycloak/keycloak:latest
+    image: quay.io/keycloak/keycloak:26.0.7
     container_name: keycloak_keycloak
     restart: unless-stopped
     environment:
@@ -24,6 +24,9 @@ services:
       KC_PROXY: "edge"
       KC_HOSTNAME_STRICT: "false"
       KC_FEATURES: "admin-fine-grained-authz"
+      PROXY_ADDRESS_FORWARDING: "true"
+      KC_HOSTNAME: "https://auth.dpvonline.de"
+      KEYCLOAK_EXTRA_ARGS_PREPENDED: "--proxy-headers xforwarded --proxy-protocol-enabled true --proxy-trusted-addresses=3.75.44.255,127.0.0.0/8"
     volumes:
       - ./extensions/prebuild/dpv-theme.jar:/opt/keycloak/providers/dpv-theme.jar
       - ./extensions/prebuild/dpv-tool-theme.jar:/opt/keycloak/providers/dpv-tool-theme.jar
